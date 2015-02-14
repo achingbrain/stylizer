@@ -4,8 +4,8 @@
   "author": "Philip Roberts",
   "bin": "./bin/cli",
   "dependencies": {
+    "chokidar": "^1.0.0-rc3",
     "cssesc": "~0.1.0",
-    "gaze": "~0.6.4",
     "minimist": "^1.1.0",
     "parent-require": "~1.0.0",
     "request": "~2.44.0",

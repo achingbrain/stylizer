@@ -38,24 +38,23 @@ var livereloadWatch = function (infile, watchDir, compileFn) {
     if (watching[infile]) return;
 
     console.log('Setting up watch');
-    var gaze = require('gaze');
+    var chokidar = require('chokidar');
 
-    gaze(watchDir, function (err, watcher) {
-        watcher.on('all', function (event, filepath) {
-            console.log('Changed:', filepath);
-            var url = 'http://localhost:' + port + '/changed?files=meeting.css';
+    var watcher = chokidar.watch(watchDir);
+    watcher.on('all', function (event, filepath) {
+        console.log('Changed:', filepath);
+        var url = 'http://localhost:' + port + '/changed?files=meeting.css';
 
-            if (compileFn) {
-                compileFn(function (err) {
-                    request.get(url);
-                });
-            } else {
+        if (compileFn) {
+            compileFn(function (err) {
                 request.get(url);
-            }
-        });
-        watching[infile] = true;
-        console.log('Watching', watchDir);
+            });
+        } else {
+            request.get(url);
+        }
     });
+    watching[infile] = true;
+    console.log('Watching', watchDir);
 };
 
 var cssError = require('./lib/css-error');
